@@ -12,12 +12,12 @@
     "typescript": "^3.6.4"
   },
   "scripts": {
-    "update-schema": "get-graphql-schema-pr http://localhost:8080/query > ./src/graphQL/ServerSchema.graphql",
+    "update-schema": "get-graphql-schema-pr http://localhost:8080/query > ./src/graphql/ServerSchema.graphql",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
-    "relay": "relay-compiler --src ./src --schema src/graphQL/ServerSchema.graphql --client-schema src/graphQL/ClientSchema.graphql --language typescript --artifactDirectory ./src/__generated__"
+    "relay": "relay-compiler --src ./src --schema src/graphql/ServerSchema.graphql --client-schema src/graphql/ClientSchema.graphql --language typescript --artifactDirectory ./src/__generated__"
   },
   "eslintConfig": {
     "extends": "react-app"
