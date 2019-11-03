@@ -1,0 +1,17 @@
+extend type Query {
+  localUser: LocalUser
+}
+
+type LocalUser {
+  id: ID!
+  fullName: String
+  email: String
+  dateOfBirth: String
+  gender: String
+  profileURL: String
+  biography: String
+  role: String
+  cartQty: Int
+  coursesIdInCart: [String]
+  acquiredIdCourses: [String]
+}

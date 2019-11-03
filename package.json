@@ -1,0 +1,53 @@
+{
+  "name": "proyecto11-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "react-relay": "^7.0.0",
+    "react-scripts": "3.2.0",
+    "relay-runtime": "^7.0.0",
+    "typescript": "^3.6.4"
+  },
+  "scripts": {
+    "update-schema": "get-graphql-schema-pr http://localhost:8080/query > ./src/GraphQL/ServerSchema.graphql",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject",
+    "relay": "relay-compiler --src ./src --schema src/GraphQL/ServerSchema.graphql --client-schema src/GraphQL/ClientSchema.graphql --language typescript --artifactDirectory ./src/__generated__"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/jest": "24.0.21",
+    "@types/node": "12.12.5",
+    "@types/react": "16.9.11",
+    "@types/react-dom": "16.9.3",
+    "@types/react-relay": "^7.0.0",
+    "@types/relay-runtime": "^6.0.9",
+    "babel-plugin-relay": "^7.0.0",
+    "customize-cra": "^0.8.0",
+    "get-graphql-schema-pr": "^2.1.1",
+    "graphql": "^14.5.8",
+    "graphql-compiler": "^1.7.0",
+    "graphql-relay": "^0.6.0",
+    "react-app-rewired": "^2.1.4",
+    "relay-compiler": "^7.0.0",
+    "relay-compiler-language-typescript": "^10.0.0"
+  }
+}
