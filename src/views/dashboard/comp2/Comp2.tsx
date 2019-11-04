@@ -1,22 +1,30 @@
 import React from 'react'
-import { graphql, useLazyLoadQuery } from 'react-relay/hooks'
+import { graphql, useLazyLoadQuery, useRelayEnvironment } from 'react-relay/hooks'
+import { commitLocalUpdate } from "relay-runtime";
 import { Comp2Query } from '../../../__generated__/Comp2Query.graphql'
+// const {useRelayEnvironment} = require('react-relay/hooks');
 
 export default function () {
   const data = useLazyLoadQuery<Comp2Query>(
     graphql`
       query Comp2Query {
-        isLoggedIn
+        __typename
+        localUser {
+          id
+        }
       }
     `,
     {},
-    { fetchPolicy: 'store-or-network' },
+    // { fetchPolicy: 'store-or-network' },
   );
-
+  commitLocalUpdate(useRelayEnvironment(), store => {
+    // record.setValue(!settings.isDrawerOpen, "isDrawerOpen");
+  });
   return <div>
-    {data.isLoggedIn
-      ? <h1>logeao</h1>
-      : <h1>no logeao</h1>
-    }
+    {console.log(data)}
+    {/* {data.localUser
+      ? data.localUser.id
+      : "empty"
+    } */}
   </div>
 }

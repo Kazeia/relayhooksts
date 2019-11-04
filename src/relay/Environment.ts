@@ -1,17 +1,19 @@
 import RelayStore from './Store'
-import { QueryResponseCache } from 'relay-runtime'
-import { Environment, Network, RecordSource, Store } from "relay-runtime"
 import { RequestParameters } from 'relay-runtime/lib/util/RelayConcreteNode'
 import { Variables, CacheConfig } from 'relay-runtime/lib/util/RelayRuntimeTypes'
+import {
+  QueryResponseCache,
+  Environment,
+  Network,
+  RecordSource,
+  Store,
+} from "relay-runtime"
 
 const
   cache = new QueryResponseCache({ size: 2500, ttl: 600 * 1000/* One Minute */ }),
-  // TODO: how add another node_env? to be dev, staging, prod
-  url = process.env.NODE_ENV === 'development'
-    ? 'http://localhost:8080/query'
-    : 'https://api.proyecto11.com/query'
+  url = String(process.env.REACT_APP_GRAHQL_API_ENDPOINT);
 
-async function fetchQuery(
+function fetchQuery(
   operation: RequestParameters,
   variables: Variables,
   cacheConfig: CacheConfig

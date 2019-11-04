@@ -1,0 +1,121 @@
+
+AWSTemplateFormatVersion: 2010-09-09
+Description: >
+  Resources for hosting a static website on Amazon Simple Storage Service (S3) & CloudFront.
+
+###############################################################################
+Parameters:
+###############################################################################
+  MyHostedZoneID:
+    Type: String
+    Description: Hosted Zone ID where will be save our hosting static website.
+  AcmCertificateArn:
+    Type: String
+    Description: The ARN of the SSL certificate to use for the CloudFront distribution.
+  DomainName:
+    Type: String
+    Description: The website domain name.
+  PriceClass:
+    Type: String
+    Description: The CloudFront distribution price class
+    AllowedValues:
+      - 'PriceClass_100'
+      - 'PriceClass_200'
+      - 'PriceClass_All'
+
+###############################################################################
+Resources:
+###############################################################################
+  TheCloudFrontOriginAccessIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: !Sub 'CloudFront OAI for ${DomainName}'
+  TheCloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Aliases:
+          - !Ref DomainName
+          - !Join [ "", [ "www.", !Ref DomainName ] ]
+        DefaultCacheBehavior:
+          Compress: true
+          ForwardedValues:
+            QueryString: false
+          TargetOriginId: !Join [ "", [ "S3-", !Ref DomainName ] ]
+          ViewerProtocolPolicy: redirect-to-https
+        DefaultRootObject: index.html
+        Enabled: true
+        HttpVersion: http2
+        IPV6Enabled: true
+        Origins:
+          - DomainName:
+              !Join [ "", [ !Ref TheBucket, ".s3.amazonaws.com" ] ]
+            Id: !Join [ "", [ "S3-", !Ref DomainName ] ]
+            S3OriginConfig:
+              OriginAccessIdentity:
+                !Join [ "", [ "origin-access-identity/cloudfront/", !Ref TheCloudFrontOriginAccessIdentity ] ]
+        PriceClass: !Ref PriceClass
+        ViewerCertificate:
+          AcmCertificateArn: !Ref AcmCertificateArn
+          MinimumProtocolVersion: TLSv1.1_2016
+          SslSupportMethod: sni-only
+      Tags:
+        - Key: Domain
+          Value: !Ref DomainName
+  TheBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref DomainName
+      Tags:
+        - Key: Domain
+          Value: !Ref DomainName
+  TheBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref TheBucket
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action: 's3:GetObject'
+            Resource: !Join [ "", [ "arn:aws:s3:::", !Ref TheBucket, "/*" ] ]
+            Principal:
+              AWS:
+                !Join [ "", [ "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ", !Ref TheCloudFrontOriginAccessIdentity ] ]
+              #CanonicalUser: !GetAtt TheCloudFrontOriginAccessIdentity.S3CanonicalUserId
+  TheRecordSets:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneId:
+        Ref: MyHostedZoneID
+      RecordSets:
+      - Name: !Join [ "", [ "", !Ref DomainName, "." ] ]
+        Type: A
+        AliasTarget:
+          # Z2FDTNDATAQYW2 -> for Cloudfront distributions.
+          HostedZoneId: Z2FDTNDATAQYW2
+          DNSName: !GetAtt TheCloudFrontDistribution.DomainName
+      - Name: !Join [ "", [ "www.", !Ref DomainName, "." ] ]
+        Type: A
+        AliasTarget:
+          HostedZoneId: Z2FDTNDATAQYW2
+          DNSName: !GetAtt TheCloudFrontDistribution.DomainName
+
+###############################################################################
+Outputs:
+###############################################################################
+  TheCloudFrontOriginAccessIdentity:
+    Description: Allow only cloudfront to get s3 objects
+    Value: !Ref TheCloudFrontOriginAccessIdentity
+  TheCloudFrontDistribution:
+    Description: Distribution for cloudfront
+    Value: !Ref TheCloudFrontDistribution
+  TheBucket:
+    Description: S3 bucket to hold website content
+    Value: !Ref TheBucket
+  TheBucketPolicy:
+    Description: S3 bucket Policy to allow only COAI cloudfront
+    Value: !Ref TheBucketPolicy
+  TheRecordSets:
+    Description: The recordSets -> domain. and www.domain.
+    Value: !Ref TheRecordSets
