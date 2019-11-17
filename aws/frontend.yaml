@@ -38,7 +38,18 @@ Resources:
         Aliases:
           - !Ref DomainName
           - !Join [ "", [ "www.", !Ref DomainName ] ]
+        CustomErrorResponses:
+        # TODO: update TTL this!
+          - ErrorCode: '404'
+            ErrorCachingMinTTL: '0'
+            ResponseCode: '200'
+            ResponsePagePath: '/index.html'
+          - ErrorCode: '403'
+            ErrorCachingMinTTL: '0'
+            ResponseCode: '200'
+            ResponsePagePath: '/index.html'
         DefaultCacheBehavior:
+        # TODO: update TTL
           Compress: true
           ForwardedValues:
             QueryString: false

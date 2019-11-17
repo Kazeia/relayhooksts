@@ -1,10 +1,10 @@
 # cloudformation stack params
-# ex: make HOSTED_ZONE_ID="XYZ" ACM_ARN="XYZ" DOMAIN_NAME="XYZ.XYZ" PRICE_CLASS="XYZ" createStack
+# ex: make STACK_NAME="XYZ" HOSTED_ZONE_ID="XYZ" ACM_ARN="XYZ" DOMAIN_NAME="XYZ.XYZ" PRICE_CLASS="XYZ" createStack
 HOSTED_ZONE_ID := $(HOSTED_ZONE_ID)
 ACM_ARN := $(ACM_ARN)
 DOMAIN_NAME := $(DOMAIN_NAME)
 PRICE_CLASS := $(PRICE_CLASS)
-PROJECT_NAME := $(PROJECT_NAME)
+STACK_NAME := $(STACK_NAME)
 
 # upload static website params
 # ex: make BUCKET_NAME="XYZ" CF_DISTRIBUTION_ID="XYZ" uploadClient
@@ -21,8 +21,8 @@ uploadClient: build
 .PHONY: createStack
 createStack:
 	aws cloudformation create-stack \
-		--stack-name $(PROJECT_NAME)-frontend \
-		--template-body file://aws/$(PROJECT_NAME)-frontend.yaml \
+		--stack-name $(STACK_NAME) \
+		--template-body file://aws/frontend.yaml \
 		--capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
 		--parameters \
 			ParameterKey=MyHostedZoneID,ParameterValue=$(HOSTED_ZONE_ID) \
@@ -33,8 +33,8 @@ createStack:
 .PHONY: updateStack
 updateStack:
 	aws cloudformation update-stack \
-		--stack-name $(PROJECT_NAME)-frontend \
-		--template-body file://aws/$(PROJECT_NAME)-frontend.yaml \
+		--stack-name $(STACK_NAME) \
+		--template-body file://aws/frontend.yaml \
 		--capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
 		--parameters \
 			ParameterKey=MyHostedZoneID,ParameterValue=$(HOSTED_ZONE_ID) \
@@ -44,4 +44,4 @@ updateStack:
 
 .PHONY: deleteStack
 deleteStack:
-	aws cloudformation delete-stack --stack-name $(PROJECT_NAME)-frontend
+	aws cloudformation delete-stack --stack-name $(STACK_NAME)
