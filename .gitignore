@@ -27,3 +27,6 @@ yarn-error.log*
 
 # relay-compiler
 src/__generated__
+
+# toRun
+howToRun.txt
