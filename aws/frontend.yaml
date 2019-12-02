@@ -39,17 +39,18 @@ Resources:
           - !Ref DomainName
           - !Join [ "", [ "www.", !Ref DomainName ] ]
         CustomErrorResponses:
-        # TODO: update TTL this!
           - ErrorCode: '404'
-            ErrorCachingMinTTL: '0'
+            ErrorCachingMinTTL: '2147483647'
             ResponseCode: '200'
             ResponsePagePath: '/index.html'
           - ErrorCode: '403'
-            ErrorCachingMinTTL: '0'
+            ErrorCachingMinTTL: '2147483647'
             ResponseCode: '200'
             ResponsePagePath: '/index.html'
         DefaultCacheBehavior:
-        # TODO: update TTL
+          DefaultTTL: 2147483647
+          MaxTTL: 2147483647
+          MinTTL: 2147483647 
           Compress: true
           ForwardedValues:
             QueryString: false
