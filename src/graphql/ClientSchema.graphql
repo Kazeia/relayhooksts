@@ -4,4 +4,6 @@ extend type Query {
 
 type LocalUser {
   id: ID!
+  firstName: String
+  lastName: String
 }

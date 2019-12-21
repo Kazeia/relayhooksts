@@ -1,5 +1,153 @@
+# Continent Type
+type Continent implements Node {
+  # The id of the Continent.
+  id: ID
+
+  # The code of Continent.
+  code: String
+
+  # The name of Continent.
+  name: String
+}
+
+# A connection to a list of items.
+type ContinentConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo
+
+  # A list of edges.
+  edges: [ContinentEdge]!
+
+  # Total count continent in db.
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ContinentEdge {
+  # The item at the end of the edge 
+  node: Continent!
+
+  # A cursor for use in pagination
+  cursor: ID
+}
+
+# The input on loginPerson
+input LoginPersonInput {
+  email: String!
+  password: String!
+  clientMutationId: String
+}
+
+# The payload on login
+type LoginPersonPayload {
+  personResolver: Person!
+  clientMutationId: String
+}
+
+# Public and Private Mutations
+type Mutation {
+  # **loginPerson** public, loginPerson ...
+  loginPerson(input: LoginPersonInput!): LoginPersonPayload!
+
+  # **logoutPerson** public, send null cookie
+  logoutPerson: Boolean
+
+  # **updatePerson** private, update profile person
+  updatePerson(input: UpdatePersonInput!): UpdatePersonPayload!
+}
+
+# An object with an ID
+interface Node {
+  # The id of the object.
+  id: ID
+}
+
+# Information to aid in pagination, pagination with cursors
+type PageInfo {
+  # **startCursor** Start cursor when returning a list
+  startCursor: ID
+
+  # **endCursor** End cursor when returning a list
+  endCursor: ID
+
+  # **hasPreviousPage** has more items backward after cursor given
+  hasPreviousPage: Boolean!
+
+  # **hasNextPage** has more items forward after cursor given
+  hasNextPage: Boolean!
+}
+
+# Person Type
+type Person implements Node {
+  # The id of the Person
+  id: ID
+
+  # The firstname of Person
+  firstName: String
+
+  # The lastname of Person
+  lastName: String
+
+  # The nick of Person
+  nick: String
+
+  # The role of Person
+  role: String
+
+  # The email of Person
+  email: String
+
+  # The password of Person
+  password: String
+}
+
 # Public requests
 type Query {
   # **isLoggedIn** is the cookie valid?
   isLoggedIn: Boolean!
+
+  # **Viewer** inside viewer-user 
+  viewer: Viewer!
+
+  # **continents** Array of continents
+  continents: [Continent]!
+
+  # **continent** Get Continent by code
+  continent(code: String): Continent!
+
+  # **simpleContinent** Only for testing
+  simpleContinent: Continent!
 }
+
+# The input on updatePerson
+input UpdatePersonInput {
+  firstName: String
+  lastName: String
+  nick: String
+  role: String
+
+  # email, password? check UseCase
+  clientMutationId: String
+}
+
+# The payload on updatePerson
+type UpdatePersonPayload {
+  personResolver: Person!
+  clientMutationId: String
+}
+
+# Private requests(with token), get on every Query the cookie and select the role!.
+type Viewer {
+  # **person** Current person logged in
+  person: Person!
+
+  # **continentsWithPagination** Array of continents
+  continentsWithPagination(after: ID, first: Int): ContinentConnection!
+
+  # **continetWithRefetch** param: david, derek, dop
+  continetWithRefetch(param: String!): Continent!
+
+  # **continentsWithRefPag** ...
+  continentsWithRefPag(after: ID, first: Int, param: String): ContinentConnection!
+}
+

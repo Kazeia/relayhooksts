@@ -13,7 +13,7 @@ export default class ErrorBoundaryWithRetry extends React.Component<Props, State
   state = { error: null };
 
   static getDerivedStateFromError(error: string | null): State {
-    return { error: error };
+    return { error };
   }
 
   _retry = () => {

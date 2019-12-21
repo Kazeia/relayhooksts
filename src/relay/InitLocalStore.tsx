@@ -9,6 +9,8 @@ export default function () {
           __typename
           localUser {
             id
+            firstName
+            lastName
           }
         }
     `,
