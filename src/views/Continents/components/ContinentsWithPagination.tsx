@@ -3,13 +3,10 @@ import { graphql, usePaginationFragment } from 'react-relay/hooks'
 
 import { ContinentsWithPaginationQuery } from '../../../__generated__/ContinentsWithPaginationQuery.graphql';
 import { ContinentsWithPagination_viewer$key } from '../../../__generated__/ContinentsWithPagination_viewer.graphql';
-
-interface IProps {
-  viewer: any;
-}
+import { ContinentsQueryResponse } from '../../../__generated__/ContinentsQuery.graphql';
 
 // TODO: check if pagination load everything ... cursor issues?
-export default function (props: IProps) {
+export default function ({ viewer }: ContinentsQueryResponse) {
   const
     [loadingMoreItems, setLoadingMoreItems] = useState<boolean>(false),
     { data, loadNext, hasNext } = usePaginationFragment<ContinentsWithPaginationQuery, ContinentsWithPagination_viewer$key>(
@@ -38,7 +35,7 @@ export default function (props: IProps) {
             }
         }
       `,
-      props.viewer
+      viewer
     ),
     _handleScroll = () => {
       if (!loadingMoreItems && hasNext &&
