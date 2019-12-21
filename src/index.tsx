@@ -4,9 +4,11 @@ import ModernEnvironment from './relay/Environment'
 import { RelayEnvironmentProvider } from 'react-relay/hooks'
 
 import Router from './routes'
+import InitLocalStore from './relay/InitLocalStore'
 
 ReactDOM.render(
   <RelayEnvironmentProvider environment={ModernEnvironment}>
+    <InitLocalStore />
     <Router />
   </RelayEnvironmentProvider>,
   document.getElementById('root')

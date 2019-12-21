@@ -11,13 +11,6 @@ export default function (modernEnvironment: Environment): Environment {
 
     record.setValue('123233', 'id')
 
-    modernEnvironment.retain({
-      dataID,
-      // @ts-ignore
-      node: { selections: [] },
-      variables: {},
-    })
-
     store.getRoot().setLinkedRecord(record, fieldKey)
   })
 

@@ -1,4 +1,3 @@
-import RelayStore from './Store'
 import { RequestParameters } from 'relay-runtime/lib/util/RelayConcreteNode'
 import { Variables, CacheConfig } from 'relay-runtime/lib/util/RelayRuntimeTypes'
 import {
@@ -8,6 +7,8 @@ import {
   RecordSource,
   Store,
 } from "relay-runtime"
+
+import CreateStoreWithEnvironment from './Store'
 
 const
   cache = new QueryResponseCache({ size: 2500, ttl: 600 * 1000/* One Minute */ }),
@@ -23,7 +24,7 @@ function fetchQuery(
     isMutation = operation.operationKind === 'mutation',
     isQuery = operation.operationKind === 'query',
     forceFetch = cacheConfig && cacheConfig.force,
-    fromCache = cache.get(queryID, variables)
+    fromCache = cache.get(queryID, variables);
 
   if (isQuery && fromCache && !forceFetch) return fromCache
 
@@ -51,7 +52,7 @@ function fetchQuery(
     .catch(error => Promise.reject(error))
 }
 
-export default RelayStore(new Environment({
+export default CreateStoreWithEnvironment(new Environment({
   network: Network.create(fetchQuery),
   store: new Store(new RecordSource())
 }))

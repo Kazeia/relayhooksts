@@ -5,10 +5,10 @@
   "dependencies": {
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
-    "react-relay": "^7.0.0",
+    "react-relay": "experimental",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
-    "relay-runtime": "^7.0.0",
+    "relay-runtime": "master",
     "typescript": "^3.6.4"
   },
   "scripts": {
@@ -39,17 +39,17 @@
     "@types/node": "12.12.5",
     "@types/react": "16.9.11",
     "@types/react-dom": "16.9.3",
-    "@types/react-relay": "^7.0.0",
+    "@types/react-relay": "latest",
     "@types/react-router-dom": "^5.1.2",
-    "@types/relay-runtime": "^6.0.9",
-    "babel-plugin-relay": "^7.0.0",
+    "@types/relay-runtime": "latest",
+    "babel-plugin-relay": "latest",
     "customize-cra": "^0.8.0",
     "get-graphql-schema-pr": "^2.1.1",
     "graphql": "^14.5.8",
     "graphql-compiler": "^1.7.0",
-    "graphql-relay": "^0.6.0",
+    "graphql-relay": "latest",
     "react-app-rewired": "^2.1.4",
-    "relay-compiler": "^7.0.0",
-    "relay-compiler-language-typescript": "^10.0.0"
+    "relay-compiler": "master",
+    "relay-compiler-language-typescript": "latest"
   }
 }

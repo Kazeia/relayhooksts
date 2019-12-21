@@ -10,7 +10,6 @@ export default function () {
       }
     `,
     {},
-    { fetchPolicy: 'store-or-network' },
   );
 
   return <div>
