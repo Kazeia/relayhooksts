@@ -23,7 +23,7 @@ export default function () {
           isLoggedIn
         }
     `,
-      {},
+      {}
     ),
     [commitFn, isMutationInFlight] = useMutation<SignIn_Mutation>(
       graphql`
