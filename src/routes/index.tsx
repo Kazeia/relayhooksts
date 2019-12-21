@@ -11,9 +11,9 @@ import {
 export default function () {
   return <BrowserRouter>
     <Switch>
-      <RouteWithSuspense exact path='/' CompWithSuspense={Home} />
-      <RouteWithSuspense exact path='/signIn' CompWithSuspense={SignIn} />
-      <RouteWithSuspense exact path='/continents' CompWithSuspense={Continents} />
+      <RouteWithSuspense exact path='/' Component={Home} />
+      <RouteWithSuspense exact path='/signIn' Component={SignIn} />
+      <RouteWithSuspense exact path='/continents' Component={Continents} />
     </Switch>
   </BrowserRouter>
 }

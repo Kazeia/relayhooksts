@@ -4,7 +4,7 @@ import { Route, RouteProps } from 'react-router-dom'
 import CreateQueryRendererSuspense from '../hooks/CreateQueryRendererSuspense'
 
 interface IOwnProps {
-  CompWithSuspense: React.ElementType;
+  Component: React.ElementType;
 }
 
 type IProps = RouteProps & IOwnProps;
@@ -13,7 +13,7 @@ type IProps = RouteProps & IOwnProps;
 export default function (props: IProps) {
   return <Route {...props} component={() =>
     <CreateQueryRendererSuspense>
-      <props.CompWithSuspense />
+      <props.Component />
     </CreateQueryRendererSuspense>
   } />
 }
